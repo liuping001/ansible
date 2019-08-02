@@ -1,0 +1,8 @@
+---
+- hosts: all
+  tasks: 
+    - user:
+        name: test1
+        password: "{{ '123456' | password_hash('sha512') }}"
+        state: present
+        shell: /bin/bash
