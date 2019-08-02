@@ -1,8 +1,20 @@
 ---
+# 方式1
 - hosts: all
   tasks: 
     - user:
         name: test1
         password: "{{ '123456' | password_hash('sha512') }}"
+        state: present
+        shell: /bin/bash
+
+# 方式2
+- hosts: all
+  vars:
+    password: "123456"
+  tasks:
+    - user:
+        name: test2
+        password: "{{ password | password_hash('sha512') }}"
         state: present
         shell: /bin/bash
