@@ -1,0 +1,6 @@
+---
+# vars file for copy
+copy_dest_path: '~'
+copy_info:
+  - {src: 'file1.txt', dest: 'file1.txt'}
+  - {src: 'test/file1.txt', dest: 'test/'}

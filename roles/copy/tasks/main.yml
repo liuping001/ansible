@@ -1,0 +1,8 @@
+---
+# tasks file for copy
+- name: copy file
+  copy:
+    src: '{{item.src}}'
+    dest: '{{copy_dest_path}}/{{item.dest}}'
+  with_items:
+    '{{copy_info}}'
