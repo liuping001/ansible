@@ -1,0 +1,38 @@
+---
+- hosts: all
+  name: shrong bashrc
+  tasks:
+    - name: alias_x
+      lineinfile: {path: ~/.bashrc,           regexp: 'alias x',          line: "alias x='chmod +x'",         backrefs: yes, create: yes}
+
+- hosts: all
+  name: tools
+  vars:
+    tool_dir: "~/tools"
+  tasks:
+    - name: install depend
+      yum: {state: present, name: [git, wget]}
+
+    - name: mkdir tools
+      file: { path: '{{tool_dir}}', state: directory}
+
+    # 安装 autojump
+    - name: check autojump is installed
+      register: result
+      shell: cd ~; [ -d .autojump ] || echo "no_autojump";
+      ignore_errors: true
+    - name: install autojump
+      raw: 'cd {{tool_dir}} && git clone git://github.com/joelthelion/autojump.git && cd autojump && ./install.py &&
+            echo "[[ -s ~/.autojump/etc/profile.d/autojump.sh ]] && source ~/.autojump/etc/profile.d/autojump.sh" >> ~/.bashrc'
+      when: result.stdout == 'no_autojump'
+
+    # 安装 fzf 模糊搜索
+    - name: check fzf is installed
+      shell: cd ~; [ -f .fzf.bash ] || echo "no_fzf";
+      register: result
+    - name: install fzf
+      shell: 'cd {{tool_dir}} && git clone --depth 1 https://github.com/junegunn/fzf.git fzf && echo "yyy"| ./fzf/install'
+      when: result.stdout == 'no_fzf'
+
+    - name: source ~/.bashrc
+      raw: 'source ~/.bashrc'
