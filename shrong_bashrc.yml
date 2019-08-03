@@ -3,7 +3,7 @@
   name: shrong bashrc
   tasks:
     - name: alias_x
-      lineinfile: {path: ~/.bashrc,           regexp: 'alias x',          line: "alias x='chmod +x'",         backrefs: yes, create: yes}
+      lineinfile: {path: ~/.bashrc,           regexp: 'alias x',          line: "alias x='chmod +x'",        create: yes}
 
 - hosts: all
   name: tools

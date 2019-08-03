@@ -1,20 +1,21 @@
 ---
-# 方式1
 - hosts: all
-  tasks: 
-    - user:
-        name: test1
-        password: "{{ '123456' | password_hash('sha512') }}"
-        state: present
-        shell: /bin/bash
-
-# 方式2
-- hosts: all
+  become: yes
+  become_method: sudo
   vars:
     password: "123456"
+    user_name: "test2"
   tasks:
-    - user:
-        name: test2
+    - name: 'add user/password:{{user_name}}/{{password}}'
+      user:
+        name: "{{user_name}}"
         password: "{{ password | password_hash('sha512') }}"
         state: present
         shell: /bin/bash
+
+    - name: 'add user:{{user_name}} to sudo list'
+      lineinfile:
+        path: /etc/sudoers
+        state: present
+        regexp: '{{user_name}}'
+        line: '%{{user_name}} ALL=(ALL) ALL'
