@@ -5,3 +5,4 @@
 -|-
 add_user.yml | 创建用户、设置密码、加入sudo
 shrong_bashrc.yml | 增强bashrc
+centos_build_cpp.yml | centos编译c++

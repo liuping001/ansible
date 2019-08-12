@@ -1,0 +1,36 @@
+- hosts: all
+  sudo: yes
+  gather_facts: no
+  pre_tasks:
+  - name: 'install python2'
+    raw: sudo yum -y install python
+  tasks:
+    - name: 'install svn git scons'
+      yum: {state: present, name: [subversion, git, scons]}
+
+    - name: 'install pip'
+      yum: {state: present, name: python-pip}
+
+    - name: 'pip protobuf'
+      pip: { name: protobuf, version: 3.7.1 }
+
+    - name: pip install python module  
+      pip: { name: [xlrd, pytz], state: present}
+
+    - name:  cmake, automake, unzip
+      yum: {state: present, name: [cmake, automake, unzip]}
+
+    - name: '*-dev'
+      yum: 
+        state: present
+        name: 
+          - boost-devel
+          - libunwind-devel
+          - openssl-devel
+          - mariadb-devel
+          - lua-devel
+          - protobuf-compiler
+          - gcc-c++
+          - libtool
+          - libstdc++-static
+          - libcurl-devel
