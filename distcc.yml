@@ -1,0 +1,20 @@
+---
+- hosts: all
+  tasks:
+    - name: yum distcc
+      yum:
+        state: present
+        name: distcc-server
+
+    - name: update distcc conf
+      lineinfile:
+        path: /etc/default/distcc
+        state: present
+        regexp: '^ALLOWEDNETS'
+        line: 'ALLOWEDNETS="127.0.0.1 192.168.101.0/24"'
+
+    - name: start distcc
+      service:
+        name: distccd
+        state: started
+        enabled: yes

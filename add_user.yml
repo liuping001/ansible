@@ -1,10 +1,11 @@
 ---
+#  ansible-playbook -i hosts.txt --limit=201 add_user.yml -e "user=test password=1234567"
 - hosts: all
   become: yes
   become_method: sudo
   vars:
-    password: "123456"
-    user_name: "test2"
+    password: "{{password}}"
+    user_name: "{{user}}"
   tasks:
     - name: 'add user/password:{{user_name}}/{{password}}'
       user:
