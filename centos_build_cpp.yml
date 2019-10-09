@@ -5,6 +5,8 @@
   - name: 'install python2'
     raw: sudo yum -y install python
   tasks:
+    - name: 'epel-release'
+      yum: {state: present, name: [epel-release]}
     - name: 'install svn git scons'
       yum: {state: present, name: [subversion, git, scons]}
 
@@ -18,7 +20,7 @@
       pip: { name: [xlrd, pytz], state: present}
 
     - name:  cmake, automake, unzip
-      yum: {state: present, name: [cmake, automake, unzip]}
+      yum: {state: present, name: [cmake, cmake3, automake, unzip]}
 
     - name: '*-dev'
       yum: 
