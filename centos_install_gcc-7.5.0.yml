@@ -1,0 +1,48 @@
+- hosts: root
+  sudo: yes
+  gather_facts: no
+
+  tasks:
+    - name: 'first yum gcc 4.7.0'
+      yum: 
+        state: present
+        name: 
+          - glibc-headers
+          - gcc-c++
+          - gcc
+          - bzip2
+
+    - name: 'get gcc 7.5'
+      get_url: 
+        url: http://ftp.gnu.org/gnu/gcc/gcc-7.5.0/gcc-7.5.0.tar.gz
+        dest: /tmp/ 
+      # copy:
+      #   src: gcc-7.5.0.tar.gz
+      #   dest: /tmp/
+
+    - name: 'init build gcc-7.5.0'
+      shell:
+        cmd: tar xzvf gcc-7.5.0.tar.gz && cd gcc-7.5.0 &&  ./contrib/download_prerequisites
+        chdir: /tmp/
+    - name: '生成makefile'    
+      shell:
+        cmd: mkdir gcc-build-7.5.0 && cd gcc-build-7.5.0 && ../configure -enable-checking=release -enable-languages=c,c++ -disable-multilib --prefix=/usr
+        chdir: /tmp/gcc-7.5.0
+    - name: 'build gcc-7.5.0'
+      shell: 
+        cmd: make -j8
+        chdir: /tmp/gcc-7.5.0/gcc-build-7.5.0/
+    - name: 'build gcc-7.5.0'
+      shell: 
+        cmd: make install
+        chdir: /tmp/gcc-7.5.0/gcc-build-7.5.0/
+    - name: 'ln -s'
+      file:
+        src: '{{item.s}}' 
+        dest: '{{item.d}}'
+        state: link
+      with_items:
+        - s: /usr/lib64/libstdc++.so.6.0.24
+          d: /usr/lib64/libstdc++.so.6  
+        - s: /usr/lib64/libstdc++.so.6.0.24
+          d: /usr/lib64/libstdc++.so
