@@ -3,7 +3,7 @@
   gather_facts: no
   pre_tasks:
   - name: 'install python2'
-    raw: sudo yum -y install python
+    raw: sudo yum -y install python  
   tasks:
     - name: 'epel-release'
       yum: {state: present, name: [epel-release]}
@@ -20,13 +20,13 @@
       pip: { name: [xlrd, pytz], state: present}
 
     - name:  cmake, automake, unzip
-      yum: {state: present, name: [cmake, cmake3, automake, unzip]}
+      yum: {state: present, name: [cmake, cmake3, automake, unzip, wget]}
 
     - name: '*-dev'
       yum: 
         state: present
         name: 
-          - boost-devel
+          - http://repo.okay.com.mx/centos/7/x86_64/release//boost166-1.66.0-16.el7.x86_64.rpm
           - libunwind-devel
           - openssl-devel
           - mariadb-devel
